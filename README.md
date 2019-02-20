@@ -30,7 +30,7 @@ if you find this repo useful, please cite:
 ```
 @article{sgc,
   title={Simplifying Graph Convolutional Networks},
-  author={Wu, Felix and Zhang, Tianyi and Holanda de Souza Jr., Amauri and Fifty, Christopher and Yu, Tao and Weinberger, Kilian Q.},
+  author={Wu, Felix and Zhang, Tianyi and Souza Jr., Amauri Holanda and Fifty, Christopher and Yu, Tao and Weinberger, Kilian Q.},
   journal={arXiv preprint arXiv:1902.07153},
   year={2019}
 }
