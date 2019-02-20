@@ -36,6 +36,13 @@ if you find this repo useful, please cite:
 }
 ```
 
+#### Other reference implementation
+Another reference implementation can be found within the *PyTorch Geometric* Project with 
+[documentation](https://rusty1s.github.io/pytorch_geometric/build/html/modules/nn.html#torch_geometric.nn.conv.SGConv)
+and [example](https://github.com/rusty1s/pytorch_geometric/blob/master/examples/sgc.py). 
+Note that in [example](https://github.com/rusty1s/pytorch_geometric/blob/master/examples/sgc.py), 
+the hyperparameters are set differently from our official implementation.
+
 ### Dependencies
 Our implementation works with PyTorch>=1.0.0 Install other dependencies: `$ pip install -r requirements.txt`
 
@@ -63,3 +70,4 @@ tasks are coming soon.
 
 ### Acknowledgement
 This repo is modified from [pygcn](https://github.com/tkipf/pygcn), and [FastGCN](https://github.com/matenure/FastGCN).
+We thank Matthias Fey, author of *PyTorch Geometric* for his help on providing a reference implementation of SGC within *PyTorch Geometric*.
