@@ -65,12 +65,6 @@ def get_model(model_opt, nfeat, nclass, nhid=0, dropout=0, cuda=True):
     elif model_opt == "SGC":
         model = SGC(nfeat=nfeat,
                     nclass=nclass)
-    # elif args.model == "GIN":
-    #     model = GIN(nfeat=features.shape[1],
-    #                 nhid=args.hidden,
-    #                 nclass=labels.shape[1],
-    #                 dropout=args.dropout,
-    #                 epsilon=args.gin_epsilon)
     else:
         raise NotImplementedError('model:{} is not implemented!'.format(model_opt))
 

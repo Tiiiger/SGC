@@ -21,16 +21,18 @@ if args.tuned:
             print("using tuned weight decay: {}".format(args.weight_decay))
     else:
         raise NotImplemented
+else:
+    print("Weight Decay: {}".format(args.weight_decay))
 
 # setting random seeds
 set_seed(args.seed, args.cuda)
 
-adj, features, labels, idx_train, idx_val, idx_test = load_citation(args.dataset, args.normalization, args.cuda)
-
-model = get_model(args.model, features.size(1), labels.max().item()+1, args.hidden, args.dropout, args.cuda)
+adj, features, labels, idx_train, idx_val, idx_test = load_citation(args.dataset, args.normalization, args.cuda, sigma=args.sigma)
 
 if args.model == "SGC": features, precompute_time = sgc_precompute(features, adj, args.degree)
 print("{:.4f}s".format(precompute_time))
+
+model = get_model(args.model, features.size(1), labels.max().item()+1, args.hidden, args.dropout, args.cuda)
 
 def train_regression(model,
                      train_features, train_labels,
@@ -63,7 +65,7 @@ def test_regression(model, test_features, test_labels):
 
 if args.model == "SGC":
     model, acc_val, train_time = train_regression(model, features[idx_train], labels[idx_train], features[idx_val], labels[idx_val],
-                     args.epochs, args.weight_decay, args.lr, args.dropout)
+                                                  args.epochs, args.weight_decay, args.lr, args.dropout)
     acc_test = test_regression(model, features[idx_test], labels[idx_test])
 
 print("Validation Accuracy: {:.4f} Test Accuracy: {:.4f}".format(acc_val, acc_test))

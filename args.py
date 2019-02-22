@@ -26,12 +26,15 @@ def get_citation_args():
                         help='feature-type')
     parser.add_argument('--normalization', type=str, default='AugNormAdj',
                        choices=['NormLap', 'Lap', 'RWalkLap', 'FirstOrderGCN',
-                                'AugNormAdj', 'NormAdj', 'RWalk', 'AugRWalk', 'NoNorm'],
+                                'AugNormAdj', 'NormAdj', 'RWalk', 'AugRWalk',
+                                'NoNorm', 'LowPass'],
                        help='Normalization method for the adjacency matrix.')
     parser.add_argument('--degree', type=int, default=2,
                         help='degree of the approximation.')
     parser.add_argument('--per', type=int, default=-1,
                         help='Number of each nodes so as to balance.')
+    parser.add_argument('--sigma', type=float, default=1.,
+                        help='sigma of adding self-loops.')
     parser.add_argument('--experiment', type=str, default="base-experiment",
                         help='feature-type')
     parser.add_argument('--gin_epsilon', action='store_true', help='use GIN-epsilon instead of GIN-0')

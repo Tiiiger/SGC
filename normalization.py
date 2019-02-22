@@ -27,8 +27,8 @@ def gcn(adj):
    return (sp.eye(adj.shape[0]) + d_mat_inv_sqrt.dot(adj).dot(d_mat_inv_sqrt)).tocoo()
 
 
-def aug_normalized_adjacency(adj):
-   adj = adj + sp.eye(adj.shape[0])
+def aug_normalized_adjacency(adj, sigma=1):
+   adj = adj + sigma * sp.eye(adj.shape[0])
    adj = sp.coo_matrix(adj)
    row_sum = np.array(adj.sum(1))
    d_inv_sqrt = np.power(row_sum, -0.5).flatten()
@@ -72,6 +72,10 @@ def no_norm(adj):
    adj = sp.coo_matrix(adj)
    return adj
 
+def low_pass(adj, sigma=0):
+   x = normalized_laplacian(adj)
+   return (sp.eye(adj.shape[0]) - 0.5*x).tocoo()
+
 def fetch_normalization(type):
    switcher = {
        'NormLap': normalized_laplacian,  # A' = I - D^-1/2 * A * D^-1/2
@@ -83,6 +87,7 @@ def fetch_normalization(type):
        'RWalk': random_walk,  # A' = D^-1*A
        'AugRWalk': aug_random_walk,  # A' = (D + I)^-1*(A + I)
        'NoNorm': no_norm, # A' = A
+       'LowPass': low_pass, # A' = A
    }
    func = switcher.get(type, lambda: "Invalid normalization technique.")
    return func
