@@ -26,7 +26,9 @@ Pubmed  | Acc: 78.9 %     | 0.29s
 Reddit  | F1:  94.9 %     | 2.7s
 
 This home repo contains the implementation for citation networks (Cora, Citeseer, and Pubmed) and social network (Reddit).
-if you find this repo useful, please cite: 
+We have a work-in-progress branch `ablation`, containing additional codebase for our ablation studies.
+
+If you find this repo useful, please cite: 
 ```
 @article{sgc,
   title={Simplifying Graph Convolutional Networks},
