@@ -50,7 +50,7 @@ and [example](https://github.com/rusty1s/pytorch_geometric/blob/master/examples/
 - *Spektral*: [example](https://github.com/danielegrattarola/spektral/blob/master/examples/semi_sup_classification_simple_gc.py)
 
 ### Dependencies
-Our implementation works with PyTorch>=1.0.0 Install other dependencies: `$ pip install -r requirements.txt`
+Our implementation works with PyTorch>=1.0.0 Install other dependencies: `$ pip install -r requirement.txt`
 
 ### Data
 We provide the citation network datasets under `data/`, which corresponds to [the public data splits](https://github.com/tkipf/gcn/tree/master/gcn/data).
