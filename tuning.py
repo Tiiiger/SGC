@@ -18,16 +18,10 @@ args = get_citation_args()
 set_seed(args.seed, args.cuda)
 
 # Hyperparameter optimization
-if args.model == 'SGC':
-    space = {'weight_decay' : hp.loguniform('weight_decay', log(1e-10), log(1e-4))}
-else:
-    raise NotImplemented
-    # space = {'weight_decay' : hp.loguniform('weight_decay', log(1e-6), log(1e-2)),
-    #          'lr': hp.loguniform('lr', log(1e-3), log(1e-1)),
-    #          'dropout': hp.uniform('dropout', 0., 0.5)}
+space = {'weight_decay' : hp.loguniform('weight_decay', log(1e-10), log(1e-4))}
 
-adj, features, labels, idx_train, idx_val, idx_test = load_citation(args.dataset, args.normalization, args.cuda, sigma=args.sigma)
-if args.model == "SGC": features, precompute_time = sgc_precompute(features, adj, args.degree)
+adj, features, labels, idx_train, idx_val, idx_test = load_citation(args.dataset, args.normalization, args.cuda, gamma=args.gamma)
+if args.model == "SGC": features, precompute_time = sgc_precompute(features, adj, args.degree, args.concat)
 
 def sgc_objective(space):
     model = get_model(args.model, features.size(1), labels.max().item()+1, args.hidden, args.dropout, args.cuda)
@@ -39,9 +33,6 @@ def sgc_objective(space):
 best = fmin(sgc_objective, space=space, algo=tpe.suggest, max_evals=200)
 print("Best weight decay: {:.2e}".format(best["weight_decay"]))
 
-with open("sigma_tuning.txt", "a") as f:
-    best_val = -sgc_objective(best)['loss']
-    f.write("{}, {}, {}\n".format(args.degree, args.sigma, best_val))
-# os.makedirs("./{}-tuning".format(args.model), exist_ok=True)
-# path = '{}-tuning/{}-{}.txt'.format(args.model, args.dataset, args.sigma)
-# with open(path, 'wb') as f: pkl.dump(best, f)
+os.makedirs("./{}-tuning".format(args.model), exist_ok=True)
+path = '{}-tuning/{}.txt'.format(args.model, args.dataset)
+with open(path, 'wb') as f: pkl.dump(best, f)

@@ -27,8 +27,8 @@ def gcn(adj):
    return (sp.eye(adj.shape[0]) + d_mat_inv_sqrt.dot(adj).dot(d_mat_inv_sqrt)).tocoo()
 
 
-def aug_normalized_adjacency(adj, sigma=1):
-   adj = adj + sigma * sp.eye(adj.shape[0])
+def aug_normalized_adjacency(adj, gamma=1):
+   adj = adj + gamma * sp.eye(adj.shape[0])
    adj = sp.coo_matrix(adj)
    row_sum = np.array(adj.sum(1))
    d_inv_sqrt = np.power(row_sum, -0.5).flatten()
@@ -53,8 +53,8 @@ def random_walk_laplacian(adj):
    return (sp.eye(adj.shape[0]) - d_mat.dot(adj)).tocoo()
 
 
-def aug_random_walk(adj):
-   adj = adj + sp.eye(adj.shape[0])
+def aug_random_walk(adj, gamma=1):
+   adj = adj + gamma*sp.eye(adj.shape[0])
    adj = sp.coo_matrix(adj)
    row_sum = np.array(adj.sum(1))
    d_inv = np.power(row_sum, -1.0).flatten()
@@ -72,7 +72,7 @@ def no_norm(adj):
    adj = sp.coo_matrix(adj)
    return adj
 
-def low_pass(adj, sigma=0):
+def low_pass(adj):
    x = normalized_laplacian(adj)
    return (sp.eye(adj.shape[0]) - 0.5*x).tocoo()
 

@@ -17,14 +17,16 @@ parser.add_argument('--inductive', action='store_true', default=False,
 parser.add_argument('--test', action='store_true', default=False,
                     help='inductive training.')
 parser.add_argument('--seed', type=int, default=42, help='Random seed.')
-parser.add_argument('--sigma', type=float, default=1., help='sigma to add self-loop.')
+parser.add_argument('--gamma', type=float, default=1., help='gamma to add self-loop.')
+parser.add_argument('--concat', action='store_true', help='concat propagated features.')
 parser.add_argument('--epochs', type=int, default=2,
                     help='Number of epochs to train.')
 parser.add_argument('--weight_decay', type=float, default=0,
                     help='Weight decay (L2 loss on parameters).')
 parser.add_argument('--normalization', type=str, default='AugNormAdj',
                    choices=['NormLap', 'Lap', 'RWalkLap', 'FirstOrderGCN',
-                            'AugNormAdj', 'NormAdj', 'RWalk', 'AugRWalk', 'NoNorm'],
+                            'AugNormAdj', 'NormAdj', 'RWalk', 'AugRWalk',
+                            'NoNorm', 'LowPass'],
                    help='Normalization method for the adjacency matrix.')
 parser.add_argument('--model', type=str, default="SGC",
                     help='model to use.')
@@ -36,12 +38,13 @@ args.cuda = not args.no_cuda and torch.cuda.is_available()
 
 set_seed(args.seed, args.cuda)
 
-adj, train_adj, features, labels, idx_train, idx_val, idx_test = load_reddit_data(normalization=args.normalization, sigma=args.sigma)
+adj, train_adj, features, labels, idx_train, idx_val, idx_test = load_reddit_data(normalization=args.normalization, gamma=args.gamma)
 print("Finished data loading.")
 
-processed_features, precompute_time = sgc_precompute(features, adj, args.degree)
+processed_features, precompute_time = sgc_precompute(features, adj,
+                                                     args.degree, args.concat)
 if args.inductive:
-    train_features, _ = sgc_precompute(features[idx_train], train_adj, args.degree)
+    train_features, _ = sgc_precompute(features[idx_train], train_adj, args.degree, args.concat)
 else:
     train_features = processed_features[idx_train]
 
@@ -70,12 +73,8 @@ def test_regression(model, test_features, test_labels):
 
 model, train_time = train_regression(model, train_features, labels[idx_train], args.epochs)
 test_f1, _ = test_regression(model, test_features, labels[idx_test if args.test else idx_val])
-conclusion = "Precompuet Time: {:.4f}s Total Time: {:.4f}s, {} F1: {:.4f}"\
-             .format(precompute_time,
-                     train_time+precompute_time,
+conclusion = "Total Time: {:.4f}s, {} F1: {:.4f}"\
+             .format( train_time+precompute_time,
                      "Test" if args.test else "Val",
                      test_f1)
 print(conclusion)
-with open("tune_sigma.txt", "a") as f:
-    f.write("Sigma: {}, Val F1: {}".format(args.sigma, test_f1))
-    f.write("\n")

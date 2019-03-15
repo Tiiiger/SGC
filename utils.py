@@ -14,9 +14,12 @@ def parse_index_file(filename):
         index.append(int(line.strip()))
     return index
 
-def preprocess_citation(adj, features, normalization="FirstOrderGCN", sigma=1):
+def preprocess_citation(adj, features, normalization="FirstOrderGCN", gamma=1):
     adj_normalizer = fetch_normalization(normalization)
-    adj = adj_normalizer(adj, sigma=sigma)
+    if 'Aug' in normalization:
+        adj = adj_normalizer(adj, gamma=gamma)
+    else:
+        adj = adj_normalizer(adj)
     features = row_normalize(features)
     return adj, features
 
@@ -29,7 +32,7 @@ def sparse_mx_to_torch_sparse_tensor(sparse_mx):
     shape = torch.Size(sparse_mx.shape)
     return torch.sparse.FloatTensor(indices, values, shape)
 
-def load_citation(dataset_str="cora", normalization="FirstOrderGCN", cuda=True, sigma=1):
+def load_citation(dataset_str="cora", normalization="FirstOrderGCN", cuda=True, gamma=1):
     """
     Load Citation Networks Datasets.
     """
@@ -68,7 +71,7 @@ def load_citation(dataset_str="cora", normalization="FirstOrderGCN", cuda=True, 
     idx_train = range(len(y))
     idx_val = range(len(y), len(y)+500)
 
-    adj, features = preprocess_citation(adj, features, normalization, sigma=sigma)
+    adj, features = preprocess_citation(adj, features, normalization, gamma=gamma)
 
     # porting to pytorch
     features = torch.FloatTensor(np.array(features.todense())).float()
@@ -89,13 +92,14 @@ def load_citation(dataset_str="cora", normalization="FirstOrderGCN", cuda=True, 
 
     return adj, features, labels, idx_train, idx_val, idx_test
 
-def sgc_precompute(features, adj, degree):
+def sgc_precompute(features, adj, degree, concat):
     t = perf_counter()
     mem = [features]
     for i in range(degree):
         features = torch.spmm(adj, features)
         mem.append(features)
-    # features = torch.cat(mem, dim=1)
+    if concat:
+        features = torch.cat(mem, dim=1)
     precompute_time = perf_counter()-t
     return features, precompute_time
 
@@ -110,7 +114,7 @@ def loadRedditFromNPZ(dataset_dir):
 
     return adj, data['feats'], data['y_train'], data['y_val'], data['y_test'], data['train_index'], data['val_index'], data['test_index']
 
-def load_reddit_data(data_path="data/", normalization="AugNormAdj", cuda=True, sigma=1.0):
+def load_reddit_data(data_path="data/", normalization="AugNormAdj", cuda=True, gamma=1.0):
     adj, features, y_train, y_val, y_test, train_index, val_index, test_index = loadRedditFromNPZ("data/")
     labels = np.zeros(adj.shape[0])
     labels[train_index]  = y_train
@@ -121,9 +125,15 @@ def load_reddit_data(data_path="data/", normalization="AugNormAdj", cuda=True, s
     features = torch.FloatTensor(np.array(features))
     features = (features-features.mean(dim=0))/features.std(dim=0)
     adj_normalizer = fetch_normalization(normalization)
-    adj = adj_normalizer(adj, sigma)
+    if "Aug" in normalization:
+        adj = adj_normalizer(adj, gamma)
+    else:
+        adj = adj_normalizer(adj)
     adj = sparse_mx_to_torch_sparse_tensor(adj).float()
-    train_adj = adj_normalizer(train_adj)
+    if "Aug" in normalization:
+        train_adj = adj_normalizer(train_adj, gamma)
+    else:
+        train_adj = adj_normalizer(train_adj)
     train_adj = sparse_mx_to_torch_sparse_tensor(train_adj).float()
     labels = torch.LongTensor(labels)
     if cuda:

@@ -33,11 +33,11 @@ def get_citation_args():
                         help='degree of the approximation.')
     parser.add_argument('--per', type=int, default=-1,
                         help='Number of each nodes so as to balance.')
-    parser.add_argument('--sigma', type=float, default=1.,
-                        help='sigma of adding self-loops.')
+    parser.add_argument('--gamma', type=float, default=1.,
+                        help='gamma of adding self-loops.')
     parser.add_argument('--experiment', type=str, default="base-experiment",
                         help='feature-type')
-    parser.add_argument('--gin_epsilon', action='store_true', help='use GIN-epsilon instead of GIN-0')
+    parser.add_argument('--concat', action='store_true', help='concat features')
     parser.add_argument('--tuned', action='store_true', help='use tuned hyperparams')
 
     args, _ = parser.parse_known_args()
