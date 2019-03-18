@@ -26,7 +26,7 @@ Pubmed  | Acc: 78.9 %     | 0.29s
 Reddit  | F1:  94.9 %     | 2.7s
 
 This home repo contains the implementation for citation networks (Cora, Citeseer, and Pubmed) and social network (Reddit).
-We have a work-in-progress branch `ablation`, containing additional codebase for our ablation studies.
+We have a work-in-progress branch [ablation](https://github.com/Tiiiger/SGC/tree/ablation), containing additional codebase for our ablation studies.
 
 If you find this repo useful, please cite: 
 ```
