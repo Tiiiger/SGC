@@ -3,3 +3,4 @@ scipy
 networkx==1.11
 scikit-learn
 sklearn
+hyperopt
