@@ -29,7 +29,7 @@ def sparse_mx_to_torch_sparse_tensor(sparse_mx):
     shape = torch.Size(sparse_mx.shape)
     return torch.sparse.FloatTensor(indices, values, shape)
 
-def load_citation(dataset_str="cora", normalization="FirstOrderGCN", cuda=True):
+def load_citation(dataset_str="cora", normalization="AugNormAdj", cuda=True):
     """
     Load Citation Networks Datasets.
     """
