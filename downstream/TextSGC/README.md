@@ -6,6 +6,17 @@ Code modified from the original repo of
 Text-GCN(https://github.com/yao8839836/text_gcn) and the pytorch implementation
 of GCN (https://github.com/tkipf/pygcn).
 
+Note that 
+
+For reference, 
+
+Dataset | Accuracy | Training Time 
+:------:|:------:|:-----------:|
+20NG    | 88.5 %          | 19.06s
+R8      | 97.2 %          | 1.90s
+R52     | 94.0 %          | 3.01s
+Ohsumed | 68.5 %          | 3.02s
+MR      | 75.9 %          | 4.00s
 ## Data
 
 We get the data from [original repo](https://github.com/yao8839836/text_gcn) and
