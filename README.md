@@ -3,7 +3,7 @@
 * [Felix Wu](https://scholar.google.com.tw/citations?user=sNL8SSoAAAAJ&hl=en)*
 * [Tianyi Zhang](https://scholar.google.com/citations?user=OI0HSa0AAAAJ&hl=en)*
 * [Amauri Holanda de Souza Jr.](https://scholar.google.com/citations?hl=en&user=lP0LBI4AAAAJ&view_op=list_works&sortby=pubdate)*
-* Christopher Fifty
+* [Christopher Fifty](https://scholar.google.com/citations?user=lg2M2RYAAAAJ&hl=en)
 * [Tao Yu](http://jhc.sjtu.edu.cn/public/home/taoyu/)
 * [Kilian Q. Weinberger](http://kilian.cs.cornell.edu/index.html)
 
