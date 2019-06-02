@@ -47,7 +47,8 @@ the results would be different from the paper reported ones.
 - *PyTorch Geometric*:
 [documentation](https://rusty1s.github.io/pytorch_geometric/build/html/modules/nn.html#torch_geometric.nn.conv.SGConv)
 and [example](https://github.com/rusty1s/pytorch_geometric/blob/master/examples/sgc.py). 
-- *Spektral*: [example](https://github.com/danielegrattarola/spektral/blob/master/examples/semi_sup_classification_simple_gc.py)
+- *Spektral*: [example](https://github.com/danielegrattarola/spektral/blob/master/examples/node_classification_simple_gc.py)
+- *StellarGraph*: [example](https://github.com/stellargraph/stellargraph/blob/develop/demos/node-classification/sgc/sgc-node-classification-example.ipynb)
 
 ### Dependencies
 Our implementation works with PyTorch>=1.0.0 Install other dependencies: `$ pip install -r requirement.txt`
