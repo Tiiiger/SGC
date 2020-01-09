@@ -1,4 +1,11 @@
 ## Simplifying Graph Convolutional Networks
+
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-red.svg)](#python)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+
+#### Updates
+* Practical advice: it is often very helpful to normalize the features to have zero mean with standard deviation one to accelerate the convergence of SGC (and many other linear models). For example, we apply this normalization for [the reddit dataset](./utils.py#L119). Please consider doing this when applying SGC to other datasets. For some relevant discussions, see [Ross et al, 2013](https://arxiv.org/pdf/1305.6646.pdf) and [Li and Zhang, 1998](https://www.jstor.org/stable/25051187?seq=1#metadata_info_tab_contents).
+
 #### Authors: 
 * [Felix Wu](https://scholar.google.com.tw/citations?user=sNL8SSoAAAAJ&hl=en)*
 * [Tianyi Zhang](https://scholar.google.com/citations?user=OI0HSa0AAAAJ&hl=en)*
@@ -14,7 +21,7 @@ This repo contains an example implementation of the Simple Graph Convolution
 (SGC) model, described in the ICML2019 paper [Simplifying Graph Convolutional Networks](https://arxiv.org/abs/1902.07153).
 
 SGC removes the nonlinearities and collapes the weight matrices in Graph Convolutional Networks (GCNs) and is essentially a linear model. 
-For an illustration, ![](https://github.com/Tiiiger/SimpleGraphConvolution/blob/master/model.jpg "SGC")
+For an illustration, ![](./model.jpg "SGC")
 
 SGC achieves competitive performance while saving much training time. For reference, on a GTX 1080 Ti,
 
@@ -74,8 +81,7 @@ $ python reddit.py --inductive --test
 ```
 ### Downstream
 We collect the code base for downstream tasks under `downstream`. Currently, we
-are releasing only SGC implementation for text classification. More downstream
-tasks are coming soon.
+are releasing only SGC implementation for text classification.
 
 ### Acknowledgement
 This repo is modified from [pygcn](https://github.com/tkipf/pygcn), and [FastGCN](https://github.com/matenure/FastGCN).
