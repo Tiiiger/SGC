@@ -54,7 +54,7 @@ the results would be different from the paper reported ones.
 
 - *Deep Graph Library*: [example](https://github.com/dmlc/dgl/tree/master/examples/pytorch/sgc).
 - *PyTorch Geometric*:
-[documentation](https://rusty1s.github.io/pytorch_geometric/build/html/modules/nn.html#torch_geometric.nn.conv.SGConv)
+[documentation](https://pytorch-geometric.readthedocs.io/en/latest/modules/nn.html#torch_geometric.nn.conv.SGConv)
 and [example](https://github.com/rusty1s/pytorch_geometric/blob/master/examples/sgc.py). 
 - *Spektral*: [example](https://github.com/danielegrattarola/spektral/blob/master/examples/node_classification_simple_gc.py)
 - *StellarGraph*: [example](https://github.com/stellargraph/stellargraph/blob/develop/demos/node-classification/sgc/sgc-node-classification-example.ipynb)
