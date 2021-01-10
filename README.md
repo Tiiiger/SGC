@@ -59,6 +59,7 @@ the results would be different from the paper reported ones.
 and [example](https://github.com/rusty1s/pytorch_geometric/blob/master/examples/sgc.py). 
 - *Spektral*: [example](https://github.com/danielegrattarola/spektral/blob/master/examples/node_classification_simple_gc.py)
 - *StellarGraph*: [example](https://github.com/stellargraph/stellargraph/blob/develop/demos/node-classification/sgc/sgc-node-classification-example.ipynb)
+- *tf_geometric*: [example](https://github.com/CrawlScript/tf_geometric/blob/master/demo/demo_sgc.py)
 
 ### Dependencies
 Our implementation works with PyTorch>=1.0.0 Install other dependencies: `$ pip install -r requirement.txt`
