@@ -35,7 +35,7 @@ args.cuda = not args.no_cuda and torch.cuda.is_available()
 
 set_seed(args.seed, args.cuda)
 
-adj, train_adj, features, labels, idx_train, idx_val, idx_test = load_reddit_data(args.normalization)
+adj, train_adj, features, labels, idx_train, idx_val, idx_test = load_reddit_data(args.normalization, cuda=args.cuda)
 print("Finished data loading.")
 
 model = SGC(features.size(1), labels.max().item()+1)
