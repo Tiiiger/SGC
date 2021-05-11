@@ -25,7 +25,7 @@ if args.tuned:
 # setting random seeds
 set_seed(args.seed, args.cuda)
 
-adj, features, labels, idx_train, idx_val, idx_test = load_citation(args.dataset, args.normalization, args.cuda)
+adj, features, labels, idx_train, idx_val, idx_test = load_citation(args.dataset, args.normalization, args.cuda, args.load_bigger_train)
 
 model = get_model(args.model, features.size(1), labels.max().item()+1, args.hidden, args.dropout, args.cuda)
 
