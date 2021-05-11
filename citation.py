@@ -63,12 +63,12 @@ def test_regression(model, test_features, test_labels):
 processed_features, precompute_time = sgc_precompute(features, adj, args.degree)
 if args.inductive:
     train_features, _ = sgc_precompute(features[idx_train], train_adj, args.degree)
-    val_features, _ = sgc_precompute(features[idx_val], val_adj, args.degree)
+    #val_features, _ = sgc_precompute(features[idx_val], val_adj, args.degree)
 else:
     train_features = processed_features[idx_train]
     val_features = processed_features[idx_val]
+val_features = processed_features[idx_val]
 test_features = processed_features[idx_test]
-
 if args.model == "SGC":
     model, acc_val, train_time = train_regression(model, train_features,  labels[idx_train], val_features, labels[idx_val],
                                                   args.epochs, args.weight_decay, args.lr, args.dropout)

@@ -84,7 +84,8 @@ def load_citation(dataset_str="cora", normalization="AugNormAdj", cuda=True, loa
 
     adj, features = preprocess_citation(adj, features, normalization)
     train_adj = sp.coo_matrix(adj.toarray()[idx_train, :][:, idx_train])
-    val_adj = sp.coo_matrix(adj.toarray()[idx_val, :][:, idx_val])
+    import pdb; pdb.set_trace()
+    val_adj = sp.coo_matrix(adj.toarray()[idx_train+list(idx_val), :][:, idx_train+list(idx_val)])
     #train_adj = None
     # porting to pytorch
     features = torch.FloatTensor(np.array(features.todense())).float()
