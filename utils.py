@@ -6,6 +6,10 @@ import pickle as pkl
 import networkx as nx
 from normalization import fetch_normalization, row_normalize
 from time import perf_counter
+from scipy.sparse import vstack
+
+ADD_TRAIN_SIZE = 460
+VAL_SIZE = 30
 
 def parse_index_file(filename):
     """Parse index file."""
@@ -29,7 +33,7 @@ def sparse_mx_to_torch_sparse_tensor(sparse_mx):
     shape = torch.Size(sparse_mx.shape)
     return torch.sparse.FloatTensor(indices, values, shape)
 
-def load_citation(dataset_str="cora", normalization="AugNormAdj", cuda=True):
+def load_citation(dataset_str="cora", normalization="AugNormAdj", cuda=True, load_bigger_train = False):
     """
     Load Citation Networks Datasets.
     """
@@ -43,8 +47,9 @@ def load_citation(dataset_str="cora", normalization="AugNormAdj", cuda=True):
                 objects.append(pkl.load(f))
 
     x, y, tx, ty, allx, ally, graph = tuple(objects)
-    test_idx_reorder = parse_index_file("data/ind.{}.test.index".format(dataset_str))
-    test_idx_range = np.sort(test_idx_reorder)
+    test_idx_reorder = np.array(parse_index_file("data/ind.{}.test.index".format(dataset_str)))
+    sorted_indices = np.argsort(test_idx_reorder)
+    test_idx_range = test_idx_reorder[sorted_indices.astype(int)]
 
     if dataset_str == 'citeseer':
         # Fix citeseer dataset (there are some isolated nodes in the graph)
@@ -57,6 +62,10 @@ def load_citation(dataset_str="cora", normalization="AugNormAdj", cuda=True):
         ty_extended[test_idx_range-min(test_idx_range), :] = ty
         ty = ty_extended
 
+    if load_bigger_train:
+        new_train_indices = test_idx_reorder[sorted_indices[:ADD_TRAIN_SIZE]]
+        test_indices = test_idx_reorder[sorted_indices[ADD_TRAIN_SIZE:]]
+
     features = sp.vstack((allx, tx)).tolil()
     features[test_idx_reorder, :] = features[test_idx_range, :]
     adj = nx.adjacency_matrix(nx.from_dict_of_lists(graph))
@@ -64,9 +73,14 @@ def load_citation(dataset_str="cora", normalization="AugNormAdj", cuda=True):
     labels = np.vstack((ally, ty))
     labels[test_idx_reorder, :] = labels[test_idx_range, :]
 
-    idx_test = test_idx_range.tolist()
-    idx_train = range(len(y))
-    idx_val = range(len(y), len(y)+500)
+    if load_bigger_train:
+        idx_test = test_indices.tolist()
+        idx_train = list(range(len(y))) + new_train_indices.tolist()
+        idx_val = range(len(y), len(y)+500)
+    else:
+        idx_test = test_idx_range.tolist()
+        idx_train = range(len(y))
+        idx_val = range(len(y), len(y)+500)
 
     adj, features = preprocess_citation(adj, features, normalization)
 
