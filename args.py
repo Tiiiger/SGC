@@ -6,6 +6,7 @@ def get_citation_args():
     parser.add_argument('--no-cuda', action='store_true', default=False,
                         help='Disables CUDA training.')
     parser.add_argument('--load_bigger_train', action='store_true', help='increase train set size, for comparison with crf')
+    parser.add_argument('--inductive', action='store_true', help='run inductive variant')
     parser.add_argument('--seed', type=int, default=42, help='Random seed.')
     parser.add_argument('--epochs', type=int, default=100,
                         help='Number of epochs to train.')
