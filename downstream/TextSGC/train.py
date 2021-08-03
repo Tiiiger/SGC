@@ -1,6 +1,8 @@
 import time
 import argparse
 import numpy as np
+import pickle
+import os
 from copy import deepcopy
 import torch
 import torch.nn.functional as F
@@ -24,6 +26,8 @@ parser.add_argument('--weight_decay', type=float, default=0,
 parser.add_argument('--degree', type=int, default=2,
                     help='degree of the approximation.')
 parser.add_argument('--tuned', action='store_true', help='use tuned hyperparams')
+parser.add_argument('--preprocessed', action='store_true',
+                    help='use preprocessed data')
 args = parser.parse_args()
 args.cuda = not args.no_cuda and torch.cuda.is_available()
 args.device = 'cuda' if args.cuda else 'cpu'
@@ -97,8 +101,16 @@ def eval_linear(model, features, label, binary=False):
 if __name__ == '__main__':
     if args.dataset == "mr": nclass = 1
     else: nclass = label_dict["train"].max().item()+1
-    adj_dense = sparse_to_torch_dense(sp_adj, device='cpu')
-    feat_dict, precompute_time = sgc_precompute(adj, adj_dense, args.degree-1, index_dict)
+    if not args.preprocessed:
+        adj_dense = sparse_to_torch_dense(sp_adj, device='cpu')
+        feat_dict, precompute_time = sgc_precompute(adj, adj_dense, args.degree-1, index_dict)
+    else:
+        # load the relased degree 2 features
+        with open(os.path.join("preprocessed",
+            "{}.pkl".format(args.dataset)), "rb") as prep:
+            feat_dict =  pkl.load(prep)
+        precompute_time = 0
+
     model = SGC(nfeat=feat_dict["train"].size(1),
                 nclass=nclass)
     if args.cuda: model.cuda()

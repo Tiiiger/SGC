@@ -29,7 +29,7 @@ def sparse_mx_to_torch_sparse_tensor(sparse_mx):
     shape = torch.Size(sparse_mx.shape)
     return torch.sparse.FloatTensor(indices, values, shape)
 
-def load_citation(dataset_str="cora", normalization="FirstOrderGCN", cuda=True):
+def load_citation(dataset_str="cora", normalization="AugNormAdj", cuda=True):
     """
     Load Citation Networks Datasets.
     """
@@ -113,7 +113,7 @@ def load_reddit_data(data_path="data/", normalization="AugNormAdj", cuda=True):
     labels[train_index]  = y_train
     labels[val_index]  = y_val
     labels[test_index]  = y_test
-    adj = adj + adj.T + sp.eye(adj.shape[0])
+    adj = adj + adj.T
     train_adj = adj[train_index, :][:, train_index]
     features = torch.FloatTensor(np.array(features))
     features = (features-features.mean(dim=0))/features.std(dim=0)
