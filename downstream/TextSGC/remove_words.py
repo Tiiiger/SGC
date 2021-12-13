@@ -80,7 +80,7 @@ vocab, count = zip(*word_freq.most_common())
 if dataset == "mr":
     cutoff = -1
 else:
-    cutoff = count.index(4)
+    cutoff = count.index(5)
 
 vocab = set(vocab[:cutoff])
 
